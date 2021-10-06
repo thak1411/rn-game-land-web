@@ -1,34 +1,71 @@
 # rn-game-land-web
 
-## Project setup
-```
-npm install
-```
+건모의 보드게임 웹
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+`vue.js 3` 공부용 토이 프로젝트
 
-### Compiles and minifies for production
-```
-npm run build
-```
+[동시 개발중인 백엔드 서버](https://github.com/thak1411/rn-game-land-server)
 
-### Run your unit tests
-```
-npm run test:unit
-```
+---
 
-### Run your end-to-end tests
-```
-npm run test:e2e
-```
+# Documentation
 
-### Lints and fixes files
-```
-npm run lint
-```
+## Architecture
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+~~~
+-public    : Template For Build File
+-dist      : Build File
+-src       : All Project Source Code
+  -assets  : Image & ttf Files
+  -i18n    : vue-i18n Module
+  -locales : Language Pack
+  -pages   : MPA's End Point Page Builder
+  -router  : Vue Router Module (Use For History Mode)
+  -store   : Vuex Container
+  -views   : Components & Sections Implementations
+-test      : Unit & E2E Test Code
+~~~
+
+## Prerequisites
+
+### Brew
+
+오픈소스 패키지를 쉽게 사용 및 관리할 수 있는 [homebrew](https://brew.sh)를 설치해야 한다.
+
+~~~shell
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+~~~
+
+### Node
+
+`brew install nvm` 후 `14.17.6`버전 설치를 권장.
+
+`node`와 `node-sass@4.12.0`가 의존성을 갖는다. `node-sass@4.12.0` 은 node 14 까지 지원하기 때문에 최신 node 를 설치하면 빌드가 되지 않는다.
+
+~~~shell
+nvm install 14.17.6
+~~~
+
+### Npm
+
+Node를 설치할 때 보통 같이 깔리지만, 깔리지 않았다면, 어떠한 경로로든 같이 깔아줘야 한다.
+
+~~~shell
+brew install npm
+~~~
+
+### Nginx
+
+개발환경에서도 프록싱을 이용하려면 설치해야 한다.
+
+~~~shell
+brew install nginx
+~~~
+
+### @vue/cli
+
+vue 프로젝트를 커맨드라인에서 빌드 및 실행을 하기위한 도구로 필수로 깔아야 한다. 커맨드라인으로 사용할 패키지이기 때문에 전역으로 깔아준다.
+
+~~~shell
+npm install -g @vue/cli
+~~~

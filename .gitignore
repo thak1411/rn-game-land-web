@@ -7,10 +7,12 @@ selenium-debug.log
 chromedriver.log
 geckodriver.log
 
+package-lock.json
 
 # local env files
 .env.local
 .env.*.local
+credentials.js
 
 # Log files
 npm-debug.log*
