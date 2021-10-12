@@ -71,11 +71,11 @@ export default {
             }, 0);
         }
         const onClickProfile = () => {
-            window.location.href = 'profile';
+            window.location.href = '/profile?username=' + store.state.user.username;
         }
 
         const userId = computed(() => store.state.user.id);
-        const userName = computed(() => store.state.user.name);
+        const userName = computed(() => store.state.user.username);
 
         return {
             t,

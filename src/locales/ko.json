@@ -19,6 +19,9 @@
         "signup_error": "회원 가입 실패: 이미 사용 중인 아이디입니다.",
         "signup_success": "회원 가입 성공"
     },
+    "profile": {
+        "profile": "의 프로필"
+    },
     "ok": "확인",
     "submit": "제출",
     "cancel": "취소",

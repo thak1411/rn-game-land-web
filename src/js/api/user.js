@@ -17,4 +17,11 @@ export default {
             password,
         });
     },
+    getUser: function(username) {
+        return axios.get('/api/user/profile', {
+            params: {
+                username,
+            },
+        });
+    }
 }

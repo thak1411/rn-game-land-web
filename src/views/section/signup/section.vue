@@ -44,7 +44,7 @@ export default {
                         alert(t('sign.signup_success'));
                         window.location.href = '/';
                     } else {
-                        alert(t('sign.signup_error'));
+                        signFail.value = true;
                     }
                 })
                 .catch(err => {

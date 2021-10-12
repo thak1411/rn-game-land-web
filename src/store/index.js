@@ -6,14 +6,14 @@ export default createStore({
     state: {
         user: {
             id: null,
-            name: '',
+            username: '',
         },
     },
     mutations: {
         setUser: function(state, payload) {
             const { id, username } = payload;
             state.user.id = id;
-            state.user.name = username;
+            state.user.username = username;
         },
     },
     actions: {
