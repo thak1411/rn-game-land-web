@@ -11,9 +11,9 @@ export default createStore({
     },
     mutations: {
         setUser: function(state, payload) {
-            const { id, name } = payload;
+            const { id, username } = payload;
             state.user.id = id;
-            state.user.name = name;
+            state.user.name = username;
         },
     },
     actions: {
@@ -21,16 +21,16 @@ export default createStore({
             setTimeout(() => {
                 axios.get('/api/user/profile')
                 .then(res => {
-                    context.commit('setUser', res.data)
+                    context.commit('setUser', res.data);
                 })
                 .catch(err => { // guest //
                     context.commit('setUser', {
                         id: null,
-                        name: 'GUEST',
+                        username: 'GUEST',
                     });
                 });
             }, 0);
-        }
+        },
     },
     modules: {
     },

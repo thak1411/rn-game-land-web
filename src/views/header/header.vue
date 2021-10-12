@@ -7,7 +7,7 @@ header.rn-header
             navbtn.ml20(:init_message="t('header.gamelist')" init_href="gamelist")
             navbtn.ml20(:init_message="t('header.community')" init_href="community")
             navbtn.ml20(:init_message="t('header.rank')" init_href="rank")
-    div.vt-wrapper.fr.prel
+    div.vt-wrapper.fr.prel.mw120.tar
         div.vt-container.header-profile(@click="onClickProfileCard")
             rntxt.bgear(:init_message="userName" :init_fontSize="18" :init_fontWeight="600")
             div.caret
@@ -57,7 +57,18 @@ export default {
             window.location.href = 'signup';
         }
         const onClickSignout = () => {
-            userApi.signout(store);
+            setTimeout(() => {
+                userApi.signout()
+                .then(res => {
+                    store.commit('setUser', {
+                        id: null,
+                        username: 'GUEST',
+                    });
+                })
+                .catch(err => {
+                    console.log('log out error', err);
+                })
+            }, 0);
         }
         const onClickProfile = () => {
             window.location.href = 'profile';
@@ -107,6 +118,12 @@ export default {
 }
 .prel {
     position: relative;
+}
+.mw120 {
+    min-width: 120px;
+}
+.tar {
+    text-align: right;
 }
 .profile-menu {
     left: 0;

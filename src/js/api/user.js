@@ -1,18 +1,20 @@
 import axios from 'axios';
 
 export default {
-    signout: function(store) {
-        setTimeout(() => {
-            axios.post('/api/user/signout')
-            .then(res => {
-                store.commit('setUser', {
-                    id: null,
-                    name: 'GUESTs',
-                });
-            })
-            .catch(err => {
-                console.log('log out error', err);
-            })
-        }, 0);
+    signout: function() {
+        return axios.post('/api/user/logout');
+    },
+    signin: function(username, password) {
+        return axios.post('/api/user/login', {
+            username,
+            password,
+        });
+    },
+    signup: function(name, username, password) {
+        return axios.post('/api/user/user', {
+            name,
+            username,
+            password,
+        });
     },
 }
