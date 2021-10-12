@@ -1,3 +1,11 @@
 {
-    
+    "header": {
+        "gamelist": "게임 플레이",
+        "community": "커뮤니티",
+        "rank": "랭킹",
+        "signin": "로그인",
+        "signup": "회원 가입",
+        "signout": "로그아웃",
+        "profile": "내 프로필"
+    }
 }
