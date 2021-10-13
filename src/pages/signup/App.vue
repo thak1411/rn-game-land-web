@@ -5,7 +5,7 @@ div#rn-app
 
 <script>
 import RnRoot from './Root.vue';
-import mixin from '../mixin/mixin_defualt.js';
+import mixin from '../mixin/mixin_default.js';
 
 export default {
     name: 'rn-app',
@@ -19,23 +19,5 @@ export default {
 </script>
 
 <style lang="scss">
-#app {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-#rn-app {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-html, body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    min-width: 780px;
-    user-select: none;
-    position: absolute;
-    overflow: auto hidden;
-}
+@import "../mixin/mixin_default.scss";
 </style>

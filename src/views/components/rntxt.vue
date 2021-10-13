@@ -19,7 +19,7 @@ export default {
             default: 12,
         },
         init_fontFamily: {
-            default: 'NotoSans',
+            default: 'AppleSdGothicNeo',
         },
         init_fontWeight: {
             default: 400,

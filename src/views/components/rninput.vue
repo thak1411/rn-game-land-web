@@ -32,7 +32,7 @@ export default {
             default: 100,
         },
         init_fontFamily: {
-            default: 'NotoSans',
+            default: 'AppleSdGothicNeo',
         },
         init_placeHolder: {
             default: '',
