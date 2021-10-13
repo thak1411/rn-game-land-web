@@ -27,6 +27,12 @@ module.exports = {
                 target: 'http://localhost:8192',
                 withCredentials: true,
             },
+            '/ws': {
+                target: 'ws://localhost:8192',
+                webSocketTransport: 'ws',
+                withCredentials: true,
+                ws: true,
+            },
         },
     },
 };

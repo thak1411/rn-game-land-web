@@ -23,5 +23,8 @@ export default {
                 username,
             },
         });
-    }
+    },
+    getProfile: function() {
+        return axios.get('/api/user/profile');
+    },
 }

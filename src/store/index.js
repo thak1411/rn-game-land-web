@@ -8,6 +8,10 @@ export default createStore({
             id: null,
             username: '',
         },
+        modal: {
+            open: false,
+        },
+        ws: null,
     },
     mutations: {
         setUser: function(state, payload) {
@@ -15,22 +19,12 @@ export default createStore({
             state.user.id = id;
             state.user.username = username;
         },
+        setWs: function(state, payload) {
+            state.ws = payload;
+        },
     },
     actions: {
-        fetchUser: function(context) {
-            setTimeout(() => {
-                axios.get('/api/user/profile')
-                .then(res => {
-                    context.commit('setUser', res.data);
-                })
-                .catch(err => { // guest //
-                    context.commit('setUser', {
-                        id: null,
-                        username: 'GUEST',
-                    });
-                });
-            }, 0);
-        },
+        
     },
     modules: {
     },

@@ -13,7 +13,7 @@ export default {
         RnRoot,
     },
     setup: function(props) {
-        mixin.fetchData();
+        mixin.fetch();
     }
 }
 </script>
