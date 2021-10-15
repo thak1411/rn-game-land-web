@@ -35,4 +35,5 @@ module.exports = {
             },
         },
     },
+    outputDir: '/usr/local/etc/nginx/dist',
 };

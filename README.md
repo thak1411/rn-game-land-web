@@ -72,6 +72,12 @@ npm install -g @vue/cli
 
 ---
 
+## Warnings
+
+새로운 환경에서 배포할때 `vue.config.js`에 존재하는 `outputDir` 옵션과 nginx 설정을 동시에 바꾸어야한다.
+
+---
+
 컨텐츠
 
 1. 유저 프로필 페이지
