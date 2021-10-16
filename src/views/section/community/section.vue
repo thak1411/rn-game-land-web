@@ -9,9 +9,13 @@ div.community-section
                     th
                         rntxt(init_message="#" :init_fontSize="16")
                     th
-                        rntxt(init_message="#" :init_fontSize="16")
-            div.community-item(v-for="(item, key) in userList" :key="key")
-                rntxt(:init_message="item")
+                        rntxt(:init_message="t('community.name')" :init_fontSize="16")
+            tbody
+                tr(v-for="(item, key) in userList" :key="key")
+                    td.item-id
+                        rntxt(:init_message="item.id" :init_fontSize="14")
+                    td.item-name
+                        rntxt(:init_message="item.name" :init_fontSize="14" @click="onClick(item.name)")
 </template>
 
 <script>
@@ -33,6 +37,7 @@ export default {
         setTimeout(() => {
             userApi.getAllUser()
             .then(res => {
+                res.data.sort((i, j) => i.id - j.id);
                 userList.value = res.data;
             })
             .catch(err => {
@@ -40,8 +45,13 @@ export default {
             });
         }, 0);
 
+        const onClick = (name) => {
+            window.location.href = '/profile?name=' + name;
+        }
+
         return {
             t,
+            onClick,
             userList,
         };
     },
@@ -60,5 +70,30 @@ export default {
 .community-list {
     width: 100%;
     margin-top: 40px;
+    border-collapse: collapse;
+
+    td, th {
+        height: 40px;
+        padding: 8px 10px;
+        box-sizing: border-box;
+        border: 1px solid rgb(221, 221, 221);
+    }
+    th {
+        text-align: left;
+    }
+    tbody tr:nth-child(2n - 1) {
+        background-color: rgb(249, 249, 249);
+    }
+}
+.item-id {
+    width: 80px;
+}
+.item-name {
+    span {
+        cursor: pointer;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 }
 </style>

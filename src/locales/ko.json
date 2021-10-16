@@ -28,7 +28,8 @@
         "go_game": "게임 하러가기"
     },
     "community": {
-        "title": "커뮤니티"
+        "title": "커뮤니티",
+        "name": "이름(닉네임)"
     },
     "ok": "확인",
     "submit": "제출",

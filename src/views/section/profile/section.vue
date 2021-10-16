@@ -31,8 +31,8 @@ export default {
                         window.location.href = '/';
                     }
                 })
-                .catch(() => {
-                    alert(t('serve_error'));
+                .catch(err => {
+                    alert(t('server_error'));
                     window.location.href = '/';
                 });
             });
