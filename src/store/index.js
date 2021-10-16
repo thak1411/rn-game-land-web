@@ -6,6 +6,7 @@ export default createStore({
     state: {
         user: {
             id: null,
+            name: '',
             username: '',
         },
         modal: {
@@ -15,8 +16,9 @@ export default createStore({
     },
     mutations: {
         setUser: function(state, payload) {
-            const { id, username } = payload;
+            const { id, name, username } = payload;
             state.user.id = id;
+            state.user.name = name;
             state.user.username = username;
         },
         setWs: function(state, payload) {

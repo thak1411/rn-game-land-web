@@ -60,22 +60,19 @@ export default {
             setTimeout(() => {
                 userApi.signout()
                 .then(res => {
-                    store.commit('setUser', {
-                        id: null,
-                        username: 'GUEST',
-                    });
+                    window.location.href = '/';
                 })
                 .catch(err => {
                     console.log('log out error', err);
-                })
+                });
             }, 0);
         }
         const onClickProfile = () => {
-            window.location.href = '/profile?username=' + store.state.user.username;
+            window.location.href = '/profile?name=' + store.state.user.name;
         }
 
         const userId = computed(() => store.state.user.id);
-        const userName = computed(() => store.state.user.username);
+        const userName = computed(() => store.state.user.name);
 
         return {
             t,

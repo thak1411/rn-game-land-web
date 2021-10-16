@@ -1,7 +1,6 @@
 import status from './statuscode';
 
 let ws = null;
-let user = null;
 
 function wsData(code, message) {
     return JSON.stringify({
@@ -12,11 +11,6 @@ function wsData(code, message) {
 
 function onChatConnect() {
     console.log('connect');
-    const us = JSON.stringify({
-        id: user.id,
-        username: user.username,
-    });
-    ws.send(wsData(status.INIT_USER, us));
 }
 function onChatQuery(e) {
     const div = document.createElement('div');
@@ -26,7 +20,7 @@ function onChatQuery(e) {
     switch (data.code) {
     case 200:
         const body = data.message;
-        div.textContent = `${body.time}_[${body.username}]: ${body.message}`;
+        div.textContent = `${body.time}_[${body.name}]: ${body.message}`;
         context.appendChild(div);
         context.scrollTo(0, context.scrollHeight);
         break;
@@ -49,8 +43,7 @@ function sendPublicChat(msg) {
     ws.send(wsData(status.BROADCAST_PUBLIC, msg));
 }
 
-function connectChatWs(_user) {
-    user = Object.assign(_user);
+function connectChatWs() {
     const scheme = window.location.protocol == 'https:' ? 'wss://' : 'ws://';
     const uri = scheme + window.location.hostname + (window.location.port === ''? '' : ':' + window.location.port) + '/ws/chat/connect';
     ws = new WebSocket(uri);

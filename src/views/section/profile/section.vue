@@ -3,7 +3,7 @@ div.profile-section
     div.profile-content
         div.profile-card
             div.profile-name
-                rntxt(:init_message="username" :init_fontSize="30")
+                rntxt(:init_message="name" :init_fontSize="30")
 </template>
 
 <script>
@@ -21,11 +21,11 @@ export default {
     setup: function(props) {
         const { t } = useI18n();
         var params = new URLSearchParams(window.location.search);
-        const username = ref(params.get('username'));
+        const name = ref(params.get('name'));
         
-        if (params.has('username')) {
+        if (params.has('name')) {
             setTimeout(() => {
-                userApi.getUser(username.value)
+                userApi.getUser(name.value)
                 .then(res => {
                     if (res.data.id == -1) {
                         window.location.href = '/';
@@ -41,7 +41,7 @@ export default {
         }
         return {
             t,
-            username,
+            name,
         };
     },
 }

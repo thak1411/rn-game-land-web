@@ -27,6 +27,9 @@
         "sub_title": "오늘 게임 한 판 ㄱ?",
         "go_game": "게임 하러가기"
     },
+    "community": {
+        "title": "커뮤니티"
+    },
     "ok": "확인",
     "submit": "제출",
     "cancel": "취소",

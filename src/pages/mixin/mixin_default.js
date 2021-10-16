@@ -5,6 +5,14 @@ import wsHandler from '../../js/websocket/handler.js';
 
 import axios from 'axios';
 
+function afterFetch(user) {
+    switch (window.location.pathname) {
+    case '/':
+        wsHandler.connectChatWs();
+        break;
+    }
+}
+
 function fetch() {
     const store = useStore();
     axios.defaults.withCredentials = true;
@@ -13,15 +21,16 @@ function fetch() {
         userApi.getProfile()
         .then(res => {
             store.commit('setUser', res.data);
-            wsHandler.connectChatWs(res.data);
+            afterFetch(res.data);
         })
         .catch(err => { // guest //
             const guest = {
                 id: null,
-                username: 'GUEST',
-            }
+                name: 'GUEST',
+                username: '',
+            };
             store.commit('setUser', guest);
-            wsHandler.connectChatWs(guest);
+            afterFetch(guest);
         });
     });
 }

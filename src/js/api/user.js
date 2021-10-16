@@ -17,14 +17,17 @@ export default {
             password,
         });
     },
-    getUser: function(username) {
+    getUser: function(name) {
         return axios.get('/api/user/profile', {
             params: {
-                username,
+                name,
             },
         });
     },
     getProfile: function() {
         return axios.get('/api/user/profile');
+    },
+    getAllUser: function() {
+        return axios.get('/api/user/all');
     },
 }
