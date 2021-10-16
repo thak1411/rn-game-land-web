@@ -32,7 +32,7 @@ function fetch() {
             store.commit('setUser', guest);
             afterFetch(guest);
         });
-    });
+    }, 0);
 }
 
 export default {

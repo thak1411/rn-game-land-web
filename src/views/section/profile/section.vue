@@ -35,7 +35,7 @@ export default {
                     alert(t('server_error'));
                     window.location.href = '/';
                 });
-            });
+            }, 0);
         } else {
             window.location.href = '/';
         }
