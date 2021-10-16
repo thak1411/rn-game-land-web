@@ -30,4 +30,19 @@ export default {
     getAllUser: function() {
         return axios.get('/api/user/all');
     },
+    isMyFriend: function(name) {
+        return axios.post('/api/user/is-my-friend', {
+            name,
+        });
+    },
+    addFriend: function(name) {
+        return axios.post('/api/user/add-friend', {
+            name,
+        });
+    },
+    removeFriend: function(name) {
+        return axios.post('/api/user/remove-friend', {
+            name,
+        });
+    },
 }

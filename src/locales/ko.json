@@ -29,7 +29,9 @@
     },
     "community": {
         "title": "커뮤니티",
-        "name": "이름(닉네임)"
+        "name": "이름(닉네임)",
+        "follow": "팔로우 하기",
+        "unfollow": "언팔로우 하기"
     },
     "ok": "확인",
     "submit": "제출",
