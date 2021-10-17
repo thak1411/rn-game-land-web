@@ -33,6 +33,11 @@
         "follow": "팔로우 하기",
         "unfollow": "언팔로우 하기"
     },
+    "gamelist": {
+        "title": "게임 목록",
+        "name": "게임 이름",
+        "min-player": "최소 플레이어(명)"
+    },
     "ok": "확인",
     "submit": "제출",
     "cancel": "취소",
