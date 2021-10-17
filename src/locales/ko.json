@@ -36,7 +36,11 @@
     "gamelist": {
         "title": "게임 목록",
         "name": "게임 이름",
-        "min-player": "최소 플레이어(명)"
+        "min-player": "최소 플레이어(명)",
+        "open": "방을 생성하시겠습니까?"
+    },
+    "room": {
+        "title": "대기실"
     },
     "ok": "확인",
     "submit": "제출",

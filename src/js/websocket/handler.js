@@ -63,10 +63,6 @@ function sendRoomInvite(roomId, targetId) {
         roomId,
         targetId,
     })));
-    console.log('SN', wsData(status.NOTICE_INVITE, JSON.stringify({
-        roomId,
-        targetId,
-    })));
 }
 
 function connectChatWs() {

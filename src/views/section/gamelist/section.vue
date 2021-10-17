@@ -17,7 +17,7 @@ div.gamelist-section
                     td
                         rntxt(:init_message="game.id" :init_fontSize="14")
                     td.item-name
-                        rntxt(:init_message="game.name" :init_fontSize="14" @click="onClick")
+                        rntxt(:init_message="game.name" :init_fontSize="14" @click="onClick(game.id, game.name)")
                     td
                         rntxt(:init_message="game.minPlayer" :init_fontSize="14")
                     
@@ -29,7 +29,6 @@ import { useI18n } from 'vue-i18n';
 
 import gameApi from '../../../js/api/game.js';
 import rntxt from '../../components/rntxt.vue';
-import wsHandler from '../../../js/websocket/handler.js';
 
 export default {
     name: 'gamelist-section',
@@ -50,8 +49,17 @@ export default {
             });
         }, 0);
 
-        const onClick = () => {
-            // window.location.
+        const onClick = (id, name) => {
+            const cf = confirm('[' + name + ']: ' + t('gamelist.open'));
+            if (cf) {
+                gameApi.createRoom(id, "") // TODO: Add Default Option In Second //
+                .then(res => {
+                    window.location.href = '/';
+                })
+                .catch(err => {
+                    console.log('err', err);
+                });
+            }
         }
 
         return {
