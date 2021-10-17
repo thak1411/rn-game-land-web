@@ -4,6 +4,8 @@ export default {
 
     INIT_USER: 10,
 
+    NOTICE_INVITE: 50,
+
     BROADCAST_PUBLIC: 90,
     BROADCAST_ROOM: 91,
 

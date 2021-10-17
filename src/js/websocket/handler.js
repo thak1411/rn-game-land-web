@@ -10,7 +10,7 @@ function wsData(code, message) {
 }
 
 function onChatConnect() {
-    console.log('connect');
+    console.log('connect chat server');
 }
 function onChatQuery(e) {
     const div = document.createElement('div');
@@ -30,6 +30,22 @@ function onChatQuery(e) {
     ws.send(wsData(status.PONG, ''));
 }
 
+function onNoticeConnect() {
+    console.log('connect notice server');
+}
+function onNoticeQuery(e) {
+    const data = JSON.parse(e.data);
+
+    switch (data.code) {
+    case 200:
+        const body = data.message;
+        console.log(body);
+        break;
+    default:
+        alert('server error');
+    }
+    ws.send(wsData(status.PONG, ''));
+}
 
 
 function onError(err) {
@@ -41,6 +57,16 @@ function onDisconnect() {
 
 function sendPublicChat(msg) {
     ws.send(wsData(status.BROADCAST_PUBLIC, msg));
+}
+function sendRoomInvite(roomId, targetId) {
+    ws.send(wsData(status.NOTICE_INVITE, JSON.stringify({
+        roomId,
+        targetId,
+    })));
+    console.log('SN', wsData(status.NOTICE_INVITE, JSON.stringify({
+        roomId,
+        targetId,
+    })));
 }
 
 function connectChatWs() {
@@ -54,7 +80,20 @@ function connectChatWs() {
     ws.onerror = onError;
 }
 
+function connectNoticeWs() {
+    const scheme = window.location.protocol == 'https:' ? 'wss://' : 'ws://';
+    const uri = scheme + window.location.hostname + (window.location.port === ''? '' : ':' + window.location.port) + '/ws/notice/connect';
+    ws = new WebSocket(uri);
+
+    ws.onopen = onNoticeConnect;
+    ws.onmessage = onNoticeQuery;
+    ws.onclose = onDisconnect;
+    ws.onerror = onError;
+}
+
 export default {
     connectChatWs,
     sendPublicChat,
+    sendRoomInvite,
+    connectNoticeWs,
 }

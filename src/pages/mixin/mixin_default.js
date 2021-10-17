@@ -6,6 +6,7 @@ import wsHandler from '../../js/websocket/handler.js';
 import axios from 'axios';
 
 function afterFetch(user) {
+    wsHandler.connectNoticeWs();
     switch (window.location.pathname) {
     case '/':
         wsHandler.connectChatWs();

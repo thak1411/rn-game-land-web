@@ -29,6 +29,7 @@ import { useI18n } from 'vue-i18n';
 
 import gameApi from '../../../js/api/game.js';
 import rntxt from '../../components/rntxt.vue';
+import wsHandler from '../../../js/websocket/handler.js';
 
 export default {
     name: 'gamelist-section',
