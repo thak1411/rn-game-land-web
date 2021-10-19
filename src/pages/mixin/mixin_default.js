@@ -5,8 +5,25 @@ import wsHandler from '../../js/websocket/handler.js';
 
 import axios from 'axios';
 
+let store = null
+
+function eventHandler(data) {
+    switch (data.code) {
+    case 200: // invite msg //
+        
+        break;
+    case 201: // join alert //
+        store.commit('setWsJoinData', data);
+        break;
+    case 202: // leave alert //
+        store.commit('setWsLeaveData', data);
+        break;
+    default:
+    }
+}
+
 function afterFetch(user) {
-    wsHandler.connectNoticeWs();
+    wsHandler.connectNoticeWs(eventHandler);
     switch (window.location.pathname) {
     case '/':
         wsHandler.connectChatWs();
@@ -15,7 +32,7 @@ function afterFetch(user) {
 }
 
 function fetch() {
-    const store = useStore();
+    store = useStore();
     axios.defaults.withCredentials = true;
 
     setTimeout(() => {

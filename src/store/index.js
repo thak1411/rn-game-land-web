@@ -13,6 +13,12 @@ export default createStore({
             open: false,
         },
         ws: null,
+        wsJoinData: [],
+        wsLeaveData: [],
+    },
+    getters: {
+        wsJoinFirst: (state) => state.wsJoinData.length > 0 ? state.wsJoinData[0] : null,
+        wsLeaveFirst: (state) => state.wsLeaveData.length > 0 ? state.wsLeaveData[0] : null,
     },
     mutations: {
         setUser: function(state, payload) {
@@ -23,6 +29,14 @@ export default createStore({
         },
         setWs: function(state, payload) {
             state.ws = payload;
+        },
+        setWsJoinData: function(state, payload) {
+            if (payload == null) state.wsJoinData.shift();
+            else state.wsJoinData.push(payload);
+        },
+        setWsLeaveData: function(state, payload) {
+            if (payload == null) state.wsLeaveData.shift();
+            else state.wsLeaveData.push(payload);
         },
     },
     actions: {

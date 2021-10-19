@@ -10,4 +10,11 @@ export default {
             option
         });
     },
+    getRoom: function(roomId) {
+        return axios.get('/api/game/room', {
+            params: {
+                roomId,
+            },
+        });
+    },
 }

@@ -34,6 +34,7 @@ module.exports = {
                 ws: true,
             },
         },
+        disableHostCheck: true,
     },
     outputDir: '/usr/local/etc/nginx/dist',
 };

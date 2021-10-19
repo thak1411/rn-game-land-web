@@ -1,6 +1,11 @@
 import status from './statuscode';
 
-let ws = null;
+let cws = null;
+let chatConnected = false;
+let chatQueue = [];
+let nws = null;
+let noticeConnected = false;
+let nwsQueue = [];
 
 function wsData(code, message) {
     return JSON.stringify({
@@ -10,7 +15,11 @@ function wsData(code, message) {
 }
 
 function onChatConnect() {
+    chatConnected = true;
     console.log('connect chat server');
+    for (let i = 0; i < chatQueue.length; ++i) {
+        cws.send(chatQueue[i]);
+    }
 }
 function onChatQuery(e) {
     const div = document.createElement('div');
@@ -27,24 +36,22 @@ function onChatQuery(e) {
     default:
         alert('server error');
     }
-    ws.send(wsData(status.PONG, ''));
+    cws.send(wsData(status.PONG, ''));
 }
 
 function onNoticeConnect() {
+    noticeConnected = true;
     console.log('connect notice server');
-}
-function onNoticeQuery(e) {
-    const data = JSON.parse(e.data);
-
-    switch (data.code) {
-    case 200:
-        const body = data.message;
-        console.log(body);
-        break;
-    default:
-        alert('server error');
+    for (let i = 0; i < nwsQueue.length; ++i) {
+        nws.send(nwsQueue[i]);
     }
-    ws.send(wsData(status.PONG, ''));
+}
+function onNoticeQuery(callback) {
+    return (e) => {
+        const data = JSON.parse(e.data);
+        callback(data);
+        nws.send(wsData(status.PONG, ''));
+    };
 }
 
 
@@ -56,38 +63,53 @@ function onDisconnect() {
 }
 
 function sendPublicChat(msg) {
-    ws.send(wsData(status.BROADCAST_PUBLIC, msg));
+    cws.send(wsData(status.BROADCAST_PUBLIC, msg));
 }
 function sendRoomInvite(roomId, targetId) {
-    ws.send(wsData(status.NOTICE_INVITE, JSON.stringify({
-        roomId,
+    if (noticeConnected == false) {
+        nwsQueue.push(wsData(status.NOTICE_INVITE, JSON.stringify({
+            roomId: parseInt(roomId),
+            targetId,
+        })));
+        return;
+    }
+    nws.send(wsData(status.NOTICE_INVITE, JSON.stringify({
+        roomId: parseInt(roomId),
         targetId,
     })));
+}
+function sendJoinRoom(roomId) {
+    if (noticeConnected == false) {
+        nwsQueue.push(wsData(status.NOTICE_JOIN, roomId));
+        return;
+    }
+    nws.send(wsData(status.NOTICE_JOIN, roomId));
 }
 
 function connectChatWs() {
     const scheme = window.location.protocol == 'https:' ? 'wss://' : 'ws://';
     const uri = scheme + window.location.hostname + (window.location.port === ''? '' : ':' + window.location.port) + '/ws/chat/connect';
-    ws = new WebSocket(uri);
+    cws = new WebSocket(uri);
 
-    ws.onopen = onChatConnect;
-    ws.onmessage = onChatQuery;
-    ws.onclose = onDisconnect;
-    ws.onerror = onError;
+    cws.onopen = onChatConnect;
+    cws.onmessage = onChatQuery;
+    cws.onclose = onDisconnect;
+    cws.onerror = onError;
 }
 
-function connectNoticeWs() {
+function connectNoticeWs(callback) {
     const scheme = window.location.protocol == 'https:' ? 'wss://' : 'ws://';
     const uri = scheme + window.location.hostname + (window.location.port === ''? '' : ':' + window.location.port) + '/ws/notice/connect';
-    ws = new WebSocket(uri);
+    nws = new WebSocket(uri);
 
-    ws.onopen = onNoticeConnect;
-    ws.onmessage = onNoticeQuery;
-    ws.onclose = onDisconnect;
-    ws.onerror = onError;
+    nws.onopen = onNoticeConnect;
+    nws.onmessage = onNoticeQuery(callback);
+    nws.onclose = onDisconnect;
+    nws.onerror = onError;
 }
 
 export default {
+    sendJoinRoom,
     connectChatWs,
     sendPublicChat,
     sendRoomInvite,

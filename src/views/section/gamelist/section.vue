@@ -20,7 +20,6 @@ div.gamelist-section
                         rntxt(:init_message="game.name" :init_fontSize="14" @click="onClick(game.id, game.name)")
                     td
                         rntxt(:init_message="game.minPlayer" :init_fontSize="14")
-                    
 </template>
 
 <script>
@@ -54,9 +53,12 @@ export default {
             if (cf) {
                 gameApi.createRoom(id, "") // TODO: Add Default Option In Second //
                 .then(res => {
-                    window.location.href = '/';
+                    window.location.href = `/room?roomId=${res.data.id}`;
                 })
                 .catch(err => {
+                    if (err.response.status == 401) {
+                        alert(t('gamelist.unauthorized'));
+                    }
                     console.log('err', err);
                 });
             }
