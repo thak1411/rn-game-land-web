@@ -38,12 +38,10 @@ export default {
         const room = ref({loading: true});
 
         setTimeout(() => {
-            wsHandler.sendRoomInvite(roomId.value, 0);
             gameApi.getRoom(roomId.value)
             .then(res => {
                 room.value = res.data;
                 room.value.loading = false;
-                console.log('send join to', roomId.value);
                 wsHandler.sendJoinRoom(roomId.value);
             })
             .catch(err => {
@@ -58,6 +56,7 @@ export default {
 
         const wsJoinData = computed(() => store.getters['wsJoinFirst']);
         const wsLeaveData = computed(() => store.getters['wsLeaveFirst']);
+        const wsInviteData = computed(() => store.getters['wsInviteFirst']);
 
         watch(wsJoinData, (v) => {
             let flag = 0;
@@ -79,6 +78,16 @@ export default {
                 flag = 1;
             }
             if (flag) store.commit('setWsLeaveData', null)
+        });
+
+        watch(wsInviteData, (v) => {
+            if (v == null) return;
+            room.value.player.push({
+                id: v.message.userId,
+                name: v.message.userName,
+                isOnline: false,
+            });
+            store.commit('setWsInviteData', null)
         });
 
         const playerColor = computed(() => {
@@ -111,6 +120,7 @@ export default {
             wsJoinData,
             wsLeaveData,
             playerColor,
+            wsInviteData,
             playerLength,
             playerOnline,
         };

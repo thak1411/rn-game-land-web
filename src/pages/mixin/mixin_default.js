@@ -8,6 +8,7 @@ import axios from 'axios';
 let store = null
 
 function eventHandler(data) {
+    console.log('get', data);
     switch (data.code) {
     case 200: // invite msg //
         
@@ -17,6 +18,9 @@ function eventHandler(data) {
         break;
     case 202: // leave alert //
         store.commit('setWsLeaveData', data);
+        break;
+    case 203: // invite alert //
+        store.commit('setWsInviteData', data);
         break;
     default:
     }

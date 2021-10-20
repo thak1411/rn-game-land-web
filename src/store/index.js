@@ -15,10 +15,12 @@ export default createStore({
         ws: null,
         wsJoinData: [],
         wsLeaveData: [],
+        wsInviteData: [],
     },
     getters: {
         wsJoinFirst: (state) => state.wsJoinData.length > 0 ? state.wsJoinData[0] : null,
         wsLeaveFirst: (state) => state.wsLeaveData.length > 0 ? state.wsLeaveData[0] : null,
+        wsInviteFirst: (state) => state.wsInviteData.length > 0 ? state.wsInviteData[0] : null,
     },
     mutations: {
         setUser: function(state, payload) {
@@ -37,6 +39,10 @@ export default createStore({
         setWsLeaveData: function(state, payload) {
             if (payload == null) state.wsLeaveData.shift();
             else state.wsLeaveData.push(payload);
+        },
+        setWsInviteData: function(state, payload) {
+            if (payload == null) state.wsInviteData.shift();
+            else state.wsInviteData.push(payload);
         },
     },
     actions: {
