@@ -8,10 +8,9 @@ import axios from 'axios';
 let store = null
 
 function eventHandler(data) {
-    console.log('get', data);
     switch (data.code) {
     case 200: // invite msg //
-        
+        // console.log('get', data);
         break;
     case 201: // join alert //
         store.commit('setWsJoinData', data);

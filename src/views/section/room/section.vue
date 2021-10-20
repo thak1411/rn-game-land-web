@@ -14,6 +14,20 @@ div.room-section
                 tr(v-for="(player, key) in room.player" :key="key")
                     td.player-name
                         rntxt(:init_message="player.name" :init_fontSize="16" :init_color="playerColor(player.isOnline)" @click="onClick(player.name)")
+        table.invite-player
+            thead
+                tr
+                    th
+                        rntxt(init_message="#" :init_fontSize="16")
+                    th
+                        rntxt(:init_message="t('sdf')" :init_fontSize="16")
+            tbody
+                tr(v-for="(user, key) in filterdUserList" :key="key")
+                    td
+                        button(@click="onClickInvite(user.id)")
+                            rntxt(init_message="<" :init_fontSize="14" :init_fontWeight="900")
+                    td
+                        rntxt(:init_message="user.name")
 </template>
 
 <script>
@@ -21,6 +35,7 @@ import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import { ref, computed, watch } from 'vue';
 
+import userApi from '../../../js/api/user.js';
 import gameApi from '../../../js/api/game.js';
 import rntxt from '../../components/rntxt.vue';
 import wsHandler from '../../../js/websocket/handler.js';
@@ -36,6 +51,8 @@ export default {
         var params = new URLSearchParams(window.location.search);
         const roomId = ref(params.get('roomId'));
         const room = ref({loading: true});
+        const userList = ref([]);
+        const inRoomUser = ref({});
 
         setTimeout(() => {
             gameApi.getRoom(roomId.value)
@@ -43,6 +60,10 @@ export default {
                 room.value = res.data;
                 room.value.loading = false;
                 wsHandler.sendJoinRoom(roomId.value);
+                for (let i = res.data.player.length; i--; ) {
+                    const value = res.data.player[i];
+                    inRoomUser.value[value.id] = true;
+                }
             })
             .catch(err => {
                 if (err.response.status == 401) {
@@ -51,6 +72,13 @@ export default {
                     alert(t('server_error'));
                 }
                 window.history.back();
+            });
+            userApi.getAllUser()
+            .then(res => {
+                userList.value = res.data;
+            })
+            .catch(err => {
+                console.log('err', err);
             });
         }, 0);
 
@@ -77,7 +105,7 @@ export default {
                 if (value.id == v.message.userId) value.isOnline = false;
                 flag = 1;
             }
-            if (flag) store.commit('setWsLeaveData', null)
+            if (flag) store.commit('setWsLeaveData', null);
         });
 
         watch(wsInviteData, (v) => {
@@ -87,7 +115,8 @@ export default {
                 name: v.message.userName,
                 isOnline: false,
             });
-            store.commit('setWsInviteData', null)
+            inRoomUser.value[v.message.userId] = true;
+            store.commit('setWsInviteData', null);
         });
 
         const playerColor = computed(() => {
@@ -108,21 +137,38 @@ export default {
             }
             return cnt;
         })
+        const filterdUserList = computed(() => {
+            let list = [];
+            for (let i = userList.value.length; i--; ) {
+                const value = userList.value[i];
+                if (inRoomUser.value[value.id]) continue;
+                list.push(value);
+            }
+            return list;
+        })
 
         const onClick = (name) => {
             window.open(window.location.protocol + '//' + window.location.host + `/profile?name=${name}`)
+        }
+
+        const onClickInvite = (id) => {
+            wsHandler.sendRoomInvite(room.value.id, id);
         }
 
         return {
             t,
             room,
             onClick,
+            userList,
+            inRoomUser,
             wsJoinData,
             wsLeaveData,
             playerColor,
             wsInviteData,
             playerLength,
             playerOnline,
+            onClickInvite,
+            filterdUserList,
         };
     },
 }
@@ -135,11 +181,12 @@ export default {
 .room-content {
     width: 100%;
     padding: 30px 25px;
+    display: inline-block;
     box-sizing: border-box;
 }
 .room-player {
-    width: 100%;
-    margin-top: 40px;
+    width: 60%;
+    float: left;
     border-collapse: collapse;
 
     td, th {
@@ -167,6 +214,38 @@ export default {
         &:hover {
             text-decoration: underline;
         }
+    }
+}
+.room-nav {
+    margin-bottom: 40px;
+}
+.invite-player {
+    float: left;
+    margin-left: 30px;
+    box-sizing: border-box;
+    width: calc(40% - 30px);
+    border-collapse: collapse;
+
+    td, th {
+        height: 40px;
+        padding: 8px 10px;
+        box-sizing: border-box;
+        border: 1px solid rgb(221, 221, 221);
+    }
+    td:nth-child(1) {
+        width: 80px;
+    }
+    td:nth-child(3) {
+        width: 220px;
+    }
+    th {
+        text-align: left;
+    }
+    th:nth-child(1), td:nth-child(1) {
+        width: 40px;
+    }
+    tbody tr:nth-child(2n - 1) {
+        background-color: rgb(249, 249, 249);
     }
 }
 </style>
