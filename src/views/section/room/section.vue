@@ -32,7 +32,7 @@ div.room-section
                     td.player-name
                         rntxt(:init_message="user.name" @click="onClick(user.name)" :init_fontSize="16")
                         | 
-                        rntxt(v-if="isFriend[user.id]" :init_message="`[${t('room.friend')}]`" :init_fontSize="10")
+                        rntxt.not-underline(v-if="isFriend[user.id]" :init_message="`[${t('room.friend')}]`" :init_fontSize="10")
 </template>
 
 <script>
@@ -246,7 +246,7 @@ export default {
     }
 }
 .player-name {
-    span {
+    span:not(.not-underline) {
         cursor: pointer;
         &:hover {
             text-decoration: underline;
