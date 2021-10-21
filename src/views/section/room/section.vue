@@ -171,6 +171,10 @@ export default {
                     if (i.name < j.name) return -1;
                     return 1;
                 }
+                if (isFriend.value[i.id] && isFriend.value[j.id]) {
+                    if (i.name < j.name) return -1;
+                    return 1;
+                }
                 if (isFriend.value[i.id]) return -1;
                 return 1;
             })
