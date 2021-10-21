@@ -14,20 +14,25 @@ div.room-section
                 tr(v-for="(player, key) in room.player" :key="key")
                     td.player-name
                         rntxt(:init_message="player.name" :init_fontSize="16" :init_color="playerColor(player.isOnline)" @click="onClick(player.name)")
+                        | 
+                        rntxt(v-if="player.id == room.owner" :init_message="`[${t('room.owner')}]`" :init_fontSize="10")
+                        rntxt(v-else :init_message="`[${t('room.player')}]`" :init_fontSize="10"  :init_color="playerColor(player.isOnline)" @click="onClick(player.name)")
         table.invite-player
             thead
                 tr
                     th
                         rntxt(init_message="#" :init_fontSize="16")
                     th
-                        rntxt(:init_message="t('sdf')" :init_fontSize="16")
+                        rntxt(:init_message="t('room.users')" :init_fontSize="16")
             tbody
                 tr(v-for="(user, key) in filterdUserList" :key="key")
                     td
-                        button(@click="onClickInvite(user.id)")
-                            rntxt(init_message="<" :init_fontSize="14" :init_fontWeight="900")
-                    td
-                        rntxt(:init_message="user.name")
+                        button.user-append-btn(@click="onClickInvite(user.id, user.name)")
+                            rntxt(init_message="+" :init_fontSize="16" :init_fontWeight="900")
+                    td.player-name
+                        rntxt(:init_message="user.name" @click="onClick(user.name)" :init_fontSize="16")
+                        | 
+                        rntxt(v-if="isFriend[user.id]" :init_message="`[${t('room.friend')}]`" :init_fontSize="10")
 </template>
 
 <script>
@@ -53,8 +58,24 @@ export default {
         const room = ref({loading: true});
         const userList = ref([]);
         const inRoomUser = ref({});
+        const isFriend = ref({});
 
         setTimeout(() => {
+            userApi.getFriend('nick')
+            .then(res => {
+                // friendList.value = res.data;
+                for (let i = res.data.length; i--; ) {
+                    const value = res.data[i];
+                    isFriend.value[value.id] = {
+                        name: value.name,
+                        username: value.username,
+                    }
+                }
+            })
+            .catch(err => {
+                console.log('err', err);
+            });
+
             gameApi.getRoom(roomId.value)
             .then(res => {
                 room.value = res.data;
@@ -73,6 +94,7 @@ export default {
                 }
                 window.history.back();
             });
+
             userApi.getAllUser()
             .then(res => {
                 userList.value = res.data;
@@ -144,6 +166,14 @@ export default {
                 if (inRoomUser.value[value.id]) continue;
                 list.push(value);
             }
+            list.sort((i, j) => {
+                if (!isFriend.value[i.id] && !isFriend.value[j.id]) {
+                    if (i.name < j.name) return -1;
+                    return 1;
+                }
+                if (isFriend.value[i.id]) return -1;
+                return 1;
+            })
             return list;
         })
 
@@ -151,8 +181,14 @@ export default {
             window.open(window.location.protocol + '//' + window.location.host + `/profile?name=${name}`)
         }
 
-        const onClickInvite = (id) => {
-            wsHandler.sendRoomInvite(room.value.id, id);
+        const onClickInvite = (id, name) => {
+            if (room.value.owner != store.state.user.id) {
+                alert(t('room.not_owner'));
+                return
+            }
+            if (confirm('[' + name + ']' + t('room.is_invite'))) {
+                wsHandler.sendRoomInvite(room.value.id, id);
+            }
         }
 
         return {
@@ -160,6 +196,7 @@ export default {
             room,
             onClick,
             userList,
+            isFriend,
             inRoomUser,
             wsJoinData,
             wsLeaveData,
@@ -247,5 +284,10 @@ export default {
     tbody tr:nth-child(2n - 1) {
         background-color: rgb(249, 249, 249);
     }
+}
+.user-append-btn {
+    border: none;
+    cursor: pointer;
+    background: none;
 }
 </style>

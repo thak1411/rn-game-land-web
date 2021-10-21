@@ -43,7 +43,12 @@
     "room": {
         "title": "대기실",
         "unauthorized": "존재하지 않는 방이거나, 비공개 방입니다.",
-        "player": "참가자"
+        "owner": "방장",
+        "player": "참가자",
+        "users": "유저",
+        "is_invite": "님을 초대하시겠습니까?",
+        "not_owner": "방장만 유저를 초대할 수 있습니다.",
+        "friend": "팔로잉 중"
     },
     "ok": "확인",
     "submit": "제출",

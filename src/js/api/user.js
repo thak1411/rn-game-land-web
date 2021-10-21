@@ -45,4 +45,11 @@ export default {
             name,
         });
     },
+    getFriend: function(name) {
+        return axios.get('/api/user/get-friend', {
+            params: {
+                name,
+            },
+        });
+    },
 }
