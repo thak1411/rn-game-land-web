@@ -21,6 +21,7 @@ export default createStore({
         wsJoinFirst: (state) => state.wsJoinData.length > 0 ? state.wsJoinData[0] : null,
         wsLeaveFirst: (state) => state.wsLeaveData.length > 0 ? state.wsLeaveData[0] : null,
         wsInviteFirst: (state) => state.wsInviteData.length > 0 ? state.wsInviteData[0] : null,
+        userName: (state) => state.user.name,
     },
     mutations: {
         setUser: function(state, payload) {

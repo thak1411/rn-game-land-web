@@ -61,21 +61,6 @@ export default {
         const isFriend = ref({});
 
         setTimeout(() => {
-            userApi.getFriend('nick')
-            .then(res => {
-                // friendList.value = res.data;
-                for (let i = res.data.length; i--; ) {
-                    const value = res.data[i];
-                    isFriend.value[value.id] = {
-                        name: value.name,
-                        username: value.username,
-                    }
-                }
-            })
-            .catch(err => {
-                console.log('err', err);
-            });
-
             gameApi.getRoom(roomId.value)
             .then(res => {
                 room.value = res.data;
@@ -107,6 +92,7 @@ export default {
         const wsJoinData = computed(() => store.getters['wsJoinFirst']);
         const wsLeaveData = computed(() => store.getters['wsLeaveFirst']);
         const wsInviteData = computed(() => store.getters['wsInviteFirst']);
+        const userName = computed(() => store.getters['userName']);
 
         watch(wsJoinData, (v) => {
             let flag = 0;
@@ -140,6 +126,24 @@ export default {
             inRoomUser.value[v.message.userId] = true;
             store.commit('setWsInviteData', null);
         });
+
+        watch(userName, (v) => {
+            if (v == '') return;
+            userApi.getFriend(store.state.user.name)
+            .then(res => {
+                // friendList.value = res.data;
+                for (let i = res.data.length; i--; ) {
+                    const value = res.data[i];
+                    isFriend.value[value.id] = {
+                        name: value.name,
+                        username: value.username,
+                    }
+                }
+            })
+            .catch(err => {
+                console.log('err', err);
+            });
+        })
 
         const playerColor = computed(() => {
             return (isOnline) => {
