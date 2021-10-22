@@ -13,7 +13,10 @@ div.index-section
         br
         hr
         div.index-chat
-            div#context
+            div#context(ref="context")
+                div.context-message(v-for="(chat, key) in chatList" :key="key")
+                    rntxt(v-if="key + 1 == chatList.length" :init_message="`${chat.time}_[${chat.name}]: ${chat.message}`" :init_fontSize="14" ref="lastchat")
+                    rntxt(v-else :init_message="`${chat.time}_[${chat.name}]: ${chat.message}`" :init_fontSize="14")
             div.row
                 div.left
                     rninput(init_width="100%" :init_height="30" v-model="chat" @keypress.enter="onSubmit")
@@ -22,8 +25,9 @@ div.index-section
 </template>
 
 <script>
+import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 
 import rntxt from '../../components/rntxt.vue';
 import rninput from '../../components/rninput.vue';
@@ -37,8 +41,10 @@ export default {
     },
     setup: function(props) {
         const { t } = useI18n();
+        const store = useStore();
         const isHover = ref(false);
         const chat = ref('');
+        const lastchat = ref(null);
 
         const onClick = () => {
             window.location.href = '/gamelist';
@@ -54,8 +60,16 @@ export default {
             return isHover.value ? '#000000' : '#00000090';
         });
 
+        const chatList = computed(() => store.getters.chatList);
+
+        watch(lastchat, (v, ov) => {
+            if (v != null) return;
+            const context = document.querySelector('#context');
+            context.scrollTo(0, context.scrollHeight);
+        })
+
         const onSubmit = () => {
-            console.log('send', chat.value);
+            // console.log('send', chat.value);
             wsHandler.sendPublicChat(chat.value);
             chat.value = '';
         }
@@ -68,6 +82,8 @@ export default {
             unhover,
             onClick,
             onSubmit,
+            chatList,
+            lastchat,
         };
     },
 }

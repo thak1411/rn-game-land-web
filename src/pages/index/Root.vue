@@ -4,9 +4,11 @@ div.rn-root
     rn-section
     rn-footer
     rn-modal
+    rn-toast
 </template>
 
 <script>
+import RnToast from '../../views/toast/toast.vue';
 import RnModal from '../../views/modal/modal.vue';
 import RnHeader from '../../views/header/header.vue';
 import RnFooter from '../../views/footer/footer.vue';
@@ -14,6 +16,7 @@ import RnSection from '../../views/section/index/section.vue';
 export default {
     name: 'rn-root',
     components: {
+        RnToast,
         RnModal,
         RnHeader,
         RnFooter,

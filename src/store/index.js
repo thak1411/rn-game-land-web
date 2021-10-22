@@ -12,7 +12,9 @@ export default createStore({
         modal: {
             open: false,
         },
+        chatList: [],
         ws: null,
+        wsRequest: [],
         wsJoinData: [],
         wsLeaveData: [],
         wsInviteData: [],
@@ -21,7 +23,9 @@ export default createStore({
         wsJoinFirst: (state) => state.wsJoinData.length > 0 ? state.wsJoinData[0] : null,
         wsLeaveFirst: (state) => state.wsLeaveData.length > 0 ? state.wsLeaveData[0] : null,
         wsInviteFirst: (state) => state.wsInviteData.length > 0 ? state.wsInviteData[0] : null,
+        wsRequest: (state) => state.wsRequest,
         userName: (state) => state.user.name,
+        chatList: (state) => state.chatList,
     },
     mutations: {
         setUser: function(state, payload) {
@@ -44,6 +48,16 @@ export default createStore({
         setWsInviteData: function(state, payload) {
             if (payload == null) state.wsInviteData.shift();
             else state.wsInviteData.push(payload);
+        },
+        setWsRequest: function(state, payload) {
+            state.wsRequest.push(payload);
+        },
+        delWsRequest: function(state, payload) {
+            state.wsRequest.splice(payload, 1);
+        },
+        appendChatMessage: function(state, payload) {
+            if (state.chatList.length >= 50) state.chatList.shift()
+            state.chatList.push(payload);
         },
     },
     actions: {

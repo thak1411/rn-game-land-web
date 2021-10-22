@@ -9,29 +9,27 @@ let store = null
 
 function eventHandler(data) {
     switch (data.code) {
-    case 200: // invite msg //
-        // console.log('get', data);
+    case 100:
+        store.commit('appendChatMessage', data.message);
         break;
-    case 201: // join alert //
-        store.commit('setWsJoinData', data);
-        break;
-    case 202: // leave alert //
-        store.commit('setWsLeaveData', data);
-        break;
-    case 203: // invite alert //
-        store.commit('setWsInviteData', data);
-        break;
+    // case 200: // invite msg //
+    //     store.commit('setWsRequest', data.message);
+    //     break;
+    // case 201: // join alert //
+    //     store.commit('setWsJoinData', data);
+    //     break;
+    // case 202: // leave alert //
+    //     store.commit('setWsLeaveData', data);
+    //     break;
+    // case 203: // invite alert //
+    //     store.commit('setWsInviteData', data);
+    //     break;
     default:
     }
 }
 
 function afterFetch(user) {
-    wsHandler.connectNoticeWs(eventHandler);
-    switch (window.location.pathname) {
-    case '/':
-        wsHandler.connectChatWs();
-        break;
-    }
+    wsHandler.connectWs(eventHandler);
 }
 
 function fetch() {
