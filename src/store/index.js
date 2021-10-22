@@ -13,17 +13,16 @@ export default createStore({
             open: false,
         },
         chatList: [],
-        ws: null,
-        wsRequest: [],
-        wsJoinData: [],
-        wsLeaveData: [],
-        wsInviteData: [],
+        joinAlert: [],
+        leaveAlert: [],
+        inviteAlert: [],
+        inviteToast: [],
     },
     getters: {
-        wsJoinFirst: (state) => state.wsJoinData.length > 0 ? state.wsJoinData[0] : null,
-        wsLeaveFirst: (state) => state.wsLeaveData.length > 0 ? state.wsLeaveData[0] : null,
-        wsInviteFirst: (state) => state.wsInviteData.length > 0 ? state.wsInviteData[0] : null,
-        wsRequest: (state) => state.wsRequest,
+        joinAlertFirst: (state) => state.joinAlert.length > 0 ? state.joinAlert[0] : null,
+        leaveAlertFirst: (state) => state.leaveAlert.length > 0 ? state.leaveAlert[0] : null,
+        inviteAlertFirst: (state) => state.inviteAlert.length > 0 ? state.inviteAlert[0] : null,
+        inviteToast: (state) => state.inviteToast,
         userName: (state) => state.user.name,
         chatList: (state) => state.chatList,
     },
@@ -34,29 +33,32 @@ export default createStore({
             state.user.name = name;
             state.user.username = username;
         },
-        setWs: function(state, payload) {
-            state.ws = payload;
+        appendJoinAlert: function(state, payload) {
+            state.joinAlert.push(payload);
         },
-        setWsJoinData: function(state, payload) {
-            if (payload == null) state.wsJoinData.shift();
-            else state.wsJoinData.push(payload);
+        popJoinAlert: function(state) {
+            state.joinAlert.shift();
         },
-        setWsLeaveData: function(state, payload) {
-            if (payload == null) state.wsLeaveData.shift();
-            else state.wsLeaveData.push(payload);
+        appendLeaveAlert: function(state, payload) {
+            state.leaveAlert.push(payload);
         },
-        setWsInviteData: function(state, payload) {
-            if (payload == null) state.wsInviteData.shift();
-            else state.wsInviteData.push(payload);
+        popLeaveAlert: function(state) {
+            state.leaveAlert.shift();
         },
-        setWsRequest: function(state, payload) {
-            state.wsRequest.push(payload);
+        appendInviteAlert: function(state, payload) {
+            state.inviteAlert.push(payload);
         },
-        delWsRequest: function(state, payload) {
+        popInviteAlert: function(state) {
+            state.inviteAlert.shift();
+        },
+        appendInviteToast: function(state, payload) {
+            state.inviteToast.push(payload);
+        },
+        deleteInviteToast: function(state, payload) {
             state.wsRequest.splice(payload, 1);
         },
         appendChatMessage: function(state, payload) {
-            if (state.chatList.length >= 50) state.chatList.shift()
+            if (state.chatList.length >= 100) state.chatList.shift()
             state.chatList.push(payload);
         },
     },

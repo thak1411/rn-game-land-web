@@ -89,12 +89,8 @@ export default {
             });
         }, 0);
 
-        const wsJoinData = computed(() => store.getters['wsJoinFirst']);
-        const wsLeaveData = computed(() => store.getters['wsLeaveFirst']);
-        const wsInviteData = computed(() => store.getters['wsInviteFirst']);
-        const userName = computed(() => store.getters['userName']);
-
-        watch(wsJoinData, (v) => {
+        const joinAlert = computed(() => store.getters['joinAlertFirst']);
+        watch(joinAlert, (v) => {
             let flag = 0;
             if (v == null) return;
             for (let i = room.value.player.length; i--; ) {
@@ -102,10 +98,11 @@ export default {
                 if (value.id == v.message.userId) value.isOnline = true;
                 flag = 1;
             }
-            if (flag) store.commit('setWsJoinData', null)
+            if (flag) store.commit('popJoinAlert')
         });
 
-        watch(wsLeaveData, (v) => {
+        const leaveAlert = computed(() => store.getters['leaveAlertFirst']);
+        watch(leaveAlert, (v) => {
             let flag = 0;
             if (v == null) return;
             for (let i = room.value.player.length; i--; ) {
@@ -113,10 +110,11 @@ export default {
                 if (value.id == v.message.userId) value.isOnline = false;
                 flag = 1;
             }
-            if (flag) store.commit('setWsLeaveData', null);
+            if (flag) store.commit('popLeaveAlert');
         });
 
-        watch(wsInviteData, (v) => {
+        const inviteAlert = computed(() => store.getters['inviteAlertFirst']);
+        watch(inviteAlert, (v) => {
             if (v == null) return;
             room.value.player.push({
                 id: v.message.userId,
@@ -124,25 +122,28 @@ export default {
                 isOnline: false,
             });
             inRoomUser.value[v.message.userId] = true;
-            store.commit('setWsInviteData', null);
+            store.commit('popInviteAlert');
         });
 
+        const userName = computed(() => store.getters['userName']);
         watch(userName, (v) => {
             if (v == '') return;
-            userApi.getFriend(store.state.user.name)
-            .then(res => {
-                // friendList.value = res.data;
-                for (let i = res.data.length; i--; ) {
-                    const value = res.data[i];
-                    isFriend.value[value.id] = {
-                        name: value.name,
-                        username: value.username,
+            setTimeout(() => {
+                userApi.getFriend(store.state.user.name)
+                .then(res => {
+                    // friendList.value = res.data;
+                    for (let i = res.data.length; i--; ) {
+                        const value = res.data[i];
+                        isFriend.value[value.id] = {
+                            name: value.name,
+                            username: value.username,
+                        }
                     }
-                }
-            })
-            .catch(err => {
-                console.log('err', err);
-            });
+                })
+                .catch(err => {
+                    console.log('err', err);
+                });
+            }, 0);
         })
 
         const playerColor = computed(() => {
@@ -205,11 +206,11 @@ export default {
             onClick,
             userList,
             isFriend,
+            joinAlert,
+            leaveAlert,
             inRoomUser,
-            wsJoinData,
-            wsLeaveData,
+            inviteAlert,
             playerColor,
-            wsInviteData,
             playerLength,
             playerOnline,
             onClickInvite,

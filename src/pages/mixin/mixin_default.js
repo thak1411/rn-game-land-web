@@ -8,22 +8,23 @@ import axios from 'axios';
 let store = null
 
 function eventHandler(data) {
+    console.log('get', data)
     switch (data.code) {
-    case 100:
+    case 100: // broadcast //
         store.commit('appendChatMessage', data.message);
         break;
-    // case 200: // invite msg //
-    //     store.commit('setWsRequest', data.message);
-    //     break;
-    // case 201: // join alert //
-    //     store.commit('setWsJoinData', data);
-    //     break;
-    // case 202: // leave alert //
-    //     store.commit('setWsLeaveData', data);
-    //     break;
-    // case 203: // invite alert //
-    //     store.commit('setWsInviteData', data);
-    //     break;
+    case 200: // invite toast //
+        store.commit('appendInviteToast', data);
+        break;
+    case 201: // join alert //
+        store.commit('appendJoinAlert', data);
+        break;
+    case 202: // leave alert //
+        store.commit('appendLeaveAlert', data);
+        break;
+    case 203: // invite alert //
+        store.commit('appendInviteAlert', data);
+        break;
     default:
     }
 }

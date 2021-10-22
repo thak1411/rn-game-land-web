@@ -58,13 +58,6 @@ function onError(err) {
     console.log('ws server error', err);
 }
 
-function sendPublicChat(msg) {
-    const content = {
-        data: msg,
-    }
-    ws.send(wsData(status.BROADCAST_PUBLIC, content));
-}
-
 function connectWs(callback) {
     const scheme = window.location.protocol == 'https:' ? 'wss://' : 'ws://';
     const uri = scheme + window.location.hostname + (window.location.port === ''? '' : ':' + window.location.port) + '/ws/connect';
@@ -76,8 +69,44 @@ function connectWs(callback) {
     ws.onerror = onError;
 }
 
+function sendPublicChat(msg) {
+    const content = {
+        data: msg,
+    }
+    if (connected == false) {
+        msgQueue.push(wsData(status.BROADCAST_PUBLIC, content));
+        return;
+    }
+    ws.send(wsData(status.BROADCAST_PUBLIC, content));
+}
+
+function sendRoomInvite(roomId, targetId) {
+    const content = {
+        roomId: parseInt(roomId),
+        targetId,
+    }
+    if (connected == false) {
+        msgQueue.push(wsData(status.NOTICE_INVITE, content));
+        return;
+    }
+    ws.send(wsData(status.NOTICE_INVITE, content));
+}
+function sendJoinRoom(roomId) {
+    const content = {
+        roomId: parseInt(roomId),
+    }
+    console.log(wsData(status.NOTICE_JOIN, content))
+    if (connected == false) {
+        msgQueue.push(wsData(status.NOTICE_JOIN, content));
+        return;
+    }
+    ws.send(wsData(status.NOTICE_JOIN, content));
+}
+
 export default {
     connectWs,
+    sendJoinRoom,
+    sendRoomInvite,
     sendPublicChat,
 
     // sendJoinRoom,
