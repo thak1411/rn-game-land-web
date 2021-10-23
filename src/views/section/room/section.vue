@@ -117,11 +117,11 @@ export default {
         watch(inviteAlert, (v) => {
             if (v == null) return;
             room.value.player.push({
-                id: v.message.userId,
-                name: v.message.userName,
+                id: v.message.targetId,
+                name: v.message.targetName,
                 isOnline: false,
             });
-            inRoomUser.value[v.message.userId] = true;
+            inRoomUser.value[v.message.targetId] = true;
             store.commit('popInviteAlert');
         });
 
