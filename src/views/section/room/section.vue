@@ -15,8 +15,8 @@ div.room-section
                     td.player-name
                         rntxt(:init_message="player.name" :init_fontSize="16" :init_color="playerColor(player.isOnline)" @click="onClick(player.name)")
                         | 
-                        rntxt(v-if="player.id == room.owner" :init_message="`[${t('room.owner')}]`" :init_fontSize="10")
-                        rntxt(v-else :init_message="`[${t('room.player')}]`" :init_fontSize="10"  :init_color="playerColor(player.isOnline)" @click="onClick(player.name)")
+                        rntxt.not-underline(v-if="player.id == room.owner" :init_message="`[${t('room.owner')}]`" :init_fontSize="10")
+                        rntxt.not-underline(v-else :init_message="`[${t('room.player')}]`" :init_fontSize="10"  :init_color="playerColor(player.isOnline)")
         table.invite-player
             thead
                 tr
