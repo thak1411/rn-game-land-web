@@ -146,6 +146,23 @@ export default {
             }, 0);
         })
 
+        const rejectInvite = computed(() => store.getters['rejectInviteAlertFirst']);
+        watch(rejectInvite, (v) => {
+            if (v == null) return;
+            const msg = v.message;
+            console.log('msg', msg)
+            for (let i = room.value.player.length; i--; ) {
+                const value = room.value.player[i];
+                console.log('value', value);
+                if (value.id == msg.userId) {
+                    inRoomUser.value[value.id] = false;
+                    room.value.player.splice(i, 1);
+                    break;
+                }
+            }
+            store.commit('popRejectInviteAlert');
+        })
+
         const playerColor = computed(() => {
             return (isOnline) => {
                 return isOnline ? '#000000' : '#00000030';

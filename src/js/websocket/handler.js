@@ -1,29 +1,5 @@
 import status from './statuscode';
 
-// function sendPublicChat(msg) {
-//     cws.send(wsData(status.BROADCAST_PUBLIC, msg));
-// }
-// function sendRoomInvite(roomId, targetId) {
-//     if (noticeConnected == false) {
-//         nwsQueue.push(wsData(status.NOTICE_INVITE, JSON.stringify({
-//             roomId: parseInt(roomId),
-//             targetId,
-//         })));
-//         return;
-//     }
-//     nws.send(wsData(status.NOTICE_INVITE, JSON.stringify({
-//         roomId: parseInt(roomId),
-//         targetId,
-//     })));
-// }
-// function sendJoinRoom(roomId) {
-//     if (noticeConnected == false) {
-//         nwsQueue.push(wsData(status.NOTICE_JOIN, roomId));
-//         return;
-//     }
-//     nws.send(wsData(status.NOTICE_JOIN, roomId));
-// }
-
 let ws = null;
 let msgQueue = [];
 let connected = false;
@@ -69,38 +45,38 @@ function connectWs(callback) {
     ws.onerror = onError;
 }
 
+function sendDefaultMessage(msg) {
+    if (connected == false) {
+        msgQueue.push(msg);
+        return;
+    }
+    ws.send(msg)
+}
+
 function sendPublicChat(msg) {
     const content = {
         data: msg,
     }
-    if (connected == false) {
-        msgQueue.push(wsData(status.BROADCAST_PUBLIC, content));
-        return;
-    }
-    ws.send(wsData(status.BROADCAST_PUBLIC, content));
+    sendDefaultMessage(wsData(status.BROADCAST_PUBLIC, content));
 }
-
 function sendRoomInvite(roomId, targetId) {
     const content = {
         roomId: parseInt(roomId),
         targetId,
     }
-    if (connected == false) {
-        msgQueue.push(wsData(status.NOTICE_INVITE, content));
-        return;
-    }
-    ws.send(wsData(status.NOTICE_INVITE, content));
+    sendDefaultMessage(wsData(status.NOTICE_INVITE, content));
 }
 function sendJoinRoom(roomId) {
     const content = {
         roomId: parseInt(roomId),
     }
-    console.log(wsData(status.NOTICE_JOIN, content))
-    if (connected == false) {
-        msgQueue.push(wsData(status.NOTICE_JOIN, content));
-        return;
+    sendDefaultMessage(wsData(status.NOTICE_JOIN, content));
+}
+function sendRejectInvite(roomId) {
+    const content = {
+        roomId: parseInt(roomId)
     }
-    ws.send(wsData(status.NOTICE_JOIN, content));
+    sendDefaultMessage(wsData(status.NOTICE_REJECT_INVITE, content));
 }
 
 export default {
@@ -108,10 +84,5 @@ export default {
     sendJoinRoom,
     sendRoomInvite,
     sendPublicChat,
-
-    // sendJoinRoom,
-    // connectChatWs,
-    // sendPublicChat,
-    // sendRoomInvite,
-    // connectNoticeWs,
+    sendRejectInvite,
 }

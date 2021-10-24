@@ -6,6 +6,7 @@ export default {
 
     NOTICE_INVITE: 50,
     NOTICE_JOIN: 51,
+    NOTICE_REJECT_INVITE: 52,
 
     BROADCAST_PUBLIC: 90,
     BROADCAST_ROOM: 91,

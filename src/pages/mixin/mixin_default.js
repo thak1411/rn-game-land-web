@@ -25,6 +25,8 @@ function eventHandler(data) {
     case 203: // invite alert //
         store.commit('appendInviteAlert', data);
         break;
+    case 204: // reject invite //
+        store.commit('appendRejectInviteAlert', data);
     default:
     }
 }
