@@ -78,10 +78,17 @@ function sendRejectInvite(roomId) {
     }
     sendDefaultMessage(wsData(status.NOTICE_REJECT_INVITE, content));
 }
+function sendGameStart(roomId) {
+    const content = {
+        roomId: parseInt(roomId)
+    }
+    sendDefaultMessage(wsData(status.GAME_START, content));
+}
 
 export default {
     connectWs,
     sendJoinRoom,
+    sendGameStart,
     sendRoomInvite,
     sendPublicChat,
     sendRejectInvite,

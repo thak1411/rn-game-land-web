@@ -27,6 +27,10 @@ function eventHandler(data) {
         break;
     case 204: // reject invite //
         store.commit('appendRejectInviteAlert', data);
+        break;
+    case 250: // start game //
+        store.commit('setNewRoom', data);
+        break;
     default:
     }
 }

@@ -4,6 +4,8 @@ div.room-content
         rntxt(:init_message="room.name" :init_fontSize="30")
     div.room-nav
         |navigation bar
+        button(@click="onClickStart")
+            rntxt(:init_message="t('room.start')" :init_fontSize="16" :init_fontWeight="900")
     table.room-player
         thead
             tr
@@ -139,6 +141,9 @@ export default {
         const onClick = (name) => {
             window.open(window.location.protocol + '//' + window.location.host + `/profile?name=${name}`)
         }
+        const onClickStart = () => {
+            wsHandler.sendGameStart(room.value.id);
+        }
 
         const onClickInvite = (id, name) => {
             if (room.value.owner != store.state.user.id) {
@@ -158,6 +163,7 @@ export default {
             isFriend,
             inRoomUser,
             playerColor,
+            onClickStart,
             playerLength,
             playerOnline,
             onClickInvite,

@@ -2,7 +2,7 @@
 div.room-section
     div(v-if="room.loading")
         rntxt(:init_message="t('room.loading')")
-    waitroom(v-else-if="room.start" :room="room" :inRoomUser="inRoomUser" :isFriend="isFriend")
+    waitroom(v-else-if="!room.start" :room="room" :inRoomUser="inRoomUser" :isFriend="isFriend")
     gameroom(v-else :room="room")
 </template>
 
@@ -100,10 +100,8 @@ export default {
         watch(rejectInvite, (v) => {
             if (v == null) return;
             const msg = v.message;
-            console.log('msg', msg)
             for (let i = room.value.player.length; i--; ) {
                 const value = room.value.player[i];
-                console.log('value', value);
                 if (value.id == msg.userId) {
                     inRoomUser.value[value.id] = false;
                     room.value.player.splice(i, 1);
@@ -111,6 +109,14 @@ export default {
                 }
             }
             store.commit('popRejectInviteAlert');
+        });
+
+        const newRoom = computed(() => store.getters['room']);
+        watch(newRoom, (v) => {
+            if (v == null) return;
+            const msg = v.message;
+            room.value = msg.room;
+            store.commit('setNewRoom', null);
         })
 
         return {

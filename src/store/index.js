@@ -12,6 +12,7 @@ export default createStore({
         modal: {
             open: false,
         },
+        room: {},
         chatList: [],
         joinAlert: [],
         leaveAlert: [],
@@ -27,6 +28,7 @@ export default createStore({
         inviteToast: (state) => state.inviteToast,
         userName: (state) => state.user.name,
         chatList: (state) => state.chatList,
+        room: (state) => state.room,
     },
     mutations: {
         setUser: function(state, payload) {
@@ -68,6 +70,9 @@ export default createStore({
         appendChatMessage: function(state, payload) {
             if (state.chatList.length >= 100) state.chatList.shift();
             state.chatList.push(payload);
+        },
+        setNewRoom: function(state, payload) {
+            state.room = payload;
         },
     },
     actions: {

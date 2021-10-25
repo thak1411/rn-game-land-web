@@ -4,6 +4,8 @@ export default {
 
     INIT_USER: 10,
 
+    GAME_START: 20,
+
     NOTICE_INVITE: 50,
     NOTICE_JOIN: 51,
     NOTICE_REJECT_INVITE: 52,
