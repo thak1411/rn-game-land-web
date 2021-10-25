@@ -168,9 +168,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.room-section {
-    width: 100%;
-}
 .room-content {
     width: 100%;
     padding: 30px 25px;

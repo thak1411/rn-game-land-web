@@ -2,7 +2,7 @@
 div.room-section
     div(v-if="room.loading")
         rntxt(:init_message="t('room.loading')")
-    waitroom(v-else-if="!room.start" :room="room" :inRoomUser="inRoomUser" :isFriend="isFriend")
+    waitroom(v-else-if="room.start" :room="room" :inRoomUser="inRoomUser" :isFriend="isFriend")
     gameroom(v-else :room="room")
 </template>
 

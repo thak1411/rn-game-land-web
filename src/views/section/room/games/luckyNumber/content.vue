@@ -1,19 +1,13 @@
 <template lang="pug">
-div.yahtzee
-    yahtzee-table(:player="room.player")
+div.lucky-number
+    |lucky-number
 </template>
 
 <script>
 import { toRefs } from 'vue';
 
-import yahtzeeTable from './table.vue';
-
-
 export default {
-    name: 'game-yahtzee',
-    components: {
-        yahtzeeTable,
-    },
+    name: 'game-lucky-number',
     props: {
         room: {
             default: {loading: true},
@@ -30,7 +24,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.yahtzee {
+.lucky-number {
     width: 100%;
 }
 </style>

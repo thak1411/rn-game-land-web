@@ -1,12 +1,52 @@
 <template lang="pug">
+div.game-content
+    div.room-title
+        rntxt(:init_message="room.name" :init_fontSize="30")
+    div.room-nav
+        |navigation bar
+    yahtzee(v-if="room.gameId == 0" :room="room")
+    lucky-number(v-else-if="room.gameId == 1" :room="room")
+    div(v-else) 404
 </template>
 
 <script>
+import { toRefs } from 'vue';
+
+import rntxt from '../../components/rntxt.vue';
+import yahtzee from './games/yahtzee/content.vue';
+import luckyNumber from './games/luckyNumber/content.vue';
+
 export default {
-    name: 'game-index'
+    name: 'game-index',
+    components: {
+        rntxt,
+
+        yahtzee,
+        luckyNumber,
+    },
+    props: {
+        room: {
+            default: {loading: true},
+        },
+    },
+    setup: function(props) {
+        const { room } = toRefs(props);
+
+        return {
+            room,
+        };
+    },
 }
 </script>
 
 <style lang="scss" scoped>
-
+.game-content {
+    width: 100%;
+    padding: 30px 25px;
+    display: inline-block;
+    box-sizing: border-box;
+}
+.room-nav {
+    margin-bottom: 30px;
+}
 </style>
