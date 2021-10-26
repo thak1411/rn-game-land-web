@@ -4,7 +4,7 @@ div.rn-root
     rn-section
     rn-footer
     rn-modal
-    rn-toast
+    //- rn-toast
 </template>
 
 <script>
