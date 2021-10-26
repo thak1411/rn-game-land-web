@@ -18,12 +18,14 @@ export default createStore({
         leaveAlert: [],
         inviteAlert: [],
         inviteToast: [],
+        rejectSelfAlert: [],
         rejectInviteAlert: [],
     },
     getters: {
         joinAlertFirst: (state) => state.joinAlert.length > 0 ? state.joinAlert[0] : null,
         leaveAlertFirst: (state) => state.leaveAlert.length > 0 ? state.leaveAlert[0] : null,
         inviteAlertFirst: (state) => state.inviteAlert.length > 0 ? state.inviteAlert[0] : null,
+        rejectSelfAlertFirst: (state) => state.rejectSelfAlert.length > 0 ? state.rejectSelfAlert[0] : null,
         rejectInviteAlertFirst: (state) => state.rejectInviteAlert.length > 0 ? state.rejectInviteAlert[0] : null,
         inviteToast: (state) => state.inviteToast,
         userName: (state) => state.user.name,
@@ -66,6 +68,12 @@ export default createStore({
         },
         popRejectInviteAlert: function(state) {
             state.rejectInviteAlert.shift();
+        },
+        appendRejectSelfAlert: function(state, payload) {
+            state.rejectSelfAlert.push(payload);
+        },
+        popRejectSelfAlert: function(state) {
+            state.rejectSelfAlert.shift();
         },
         appendChatMessage: function(state, payload) {
             if (state.chatList.length >= 100) state.chatList.shift();

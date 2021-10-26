@@ -25,8 +25,11 @@ function eventHandler(data) {
     case 203: // invite alert //
         store.commit('appendInviteAlert', data);
         break;
-    case 204: // reject invite //
+    case 204: // reject invite - ban player //
         store.commit('appendRejectInviteAlert', data);
+        break;
+    case 205: // reject invite - delete toast //
+        store.commit('appendRejectSelfAlert', data);
         break;
     case 250: // start game //
         store.commit('setNewRoom', data);

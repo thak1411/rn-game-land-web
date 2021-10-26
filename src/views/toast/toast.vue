@@ -25,19 +25,21 @@ export default {
             wsHandler.sendRejectInvite(roomId);
         }
 
-        const rejectInvite = computed(() => store.getters['rejectInviteAlertFirst']);
+        const rejectInvite = computed(() => store.getters['rejectSelfAlertFirst']);
         watch(rejectInvite, (v) => {
             if (v == null) return;
-            const msg = v.message
-            const rej = store.state.rejectInviteAlert;
+            console.log('v', v)
+            const msg = v.message;
+            const rej = store.state.rejectSelfAlert;
             // Warnings: must be delete by reverse order - indexing issue //
             for (let i = rej.length; i--; ) {
-                const value = rej[i]
+                const value = rej[i];
+                console.log(value.message.roomId, msg.roomId);
                 if (value.message.roomId == msg.roomId) {
                     store.commit('deleteInviteToast', i);
                 }
             }
-            store.commit('popRejectInviteAlert');
+            store.commit('popRejectSelfAlert');
         })
         
         return {
