@@ -84,6 +84,14 @@ function sendGameStart(roomId) {
     }
     sendDefaultMessage(wsData(status.GAME_START, content));
 }
+function sendGameMessage(id, roomId, type, data) {
+    const content = {
+        id: parseInt(id),
+        roomId: parseInt(roomId),
+        type,
+    }
+    sendDefaultMessage(wsData(status.GAME_MESSAGE, Object.assign(content, data)));
+}
 
 export default {
     connectWs,
@@ -91,5 +99,6 @@ export default {
     sendGameStart,
     sendRoomInvite,
     sendPublicChat,
+    sendGameMessage,
     sendRejectInvite,
 }

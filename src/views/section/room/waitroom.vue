@@ -42,6 +42,7 @@ import { useI18n } from 'vue-i18n';
 import { ref, toRefs, computed, watch } from 'vue';
 
 import userApi from '../../../js/api/user.js';
+import Util from '../../components/js/util.js';
 import rntxt from '../../components/rntxt.vue';
 import wsHandler from '../../../js/websocket/handler.js';
 
@@ -58,9 +59,9 @@ export default {
             default: {},
         },
     },
-    setup: function(props) {
-        const { room, inRoomUser } = toRefs(props);
-
+    setup: function(props, {emit}) {
+        const { inRoomUser } = toRefs(props);
+        const room = Util.modelIO(props, emit, 'room');
         const { t } = useI18n();
         const store = useStore();
         const userList = ref([]);

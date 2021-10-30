@@ -6,6 +6,8 @@ div.lucky-number
 <script>
 import { toRefs } from 'vue';
 
+import Util from '../../../../components/js/util.js';
+
 export default {
     name: 'game-lucky-number',
     props: {
@@ -13,8 +15,8 @@ export default {
             default: {loading: true},
         },
     },
-    setup: function(props) {
-        const { room } = toRefs(props);
+    setup: function(props, {emit}) {
+        const room = Util.modelIO(props, emit, 'room');
 
         return {
             room,

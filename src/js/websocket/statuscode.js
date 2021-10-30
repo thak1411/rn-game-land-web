@@ -5,6 +5,7 @@ export default {
     INIT_USER: 10,
 
     GAME_START: 20,
+    GAME_MESSAGE: 70,
 
     NOTICE_INVITE: 50,
     NOTICE_JOIN: 51,

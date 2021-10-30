@@ -2,8 +2,8 @@
 div.room-section
     div(v-if="room.loading")
         rntxt(:init_message="t('room.loading')")
-    waitroom(v-else-if="!room.start" :room="room" :inRoomUser="inRoomUser" :isFriend="isFriend")
-    gameroom(v-else :room="room")
+    waitroom(v-else-if="!room.start" v-model:room="room" :inRoomUser="inRoomUser" :isFriend="isFriend")
+    gameroom(v-else v-model:room="room")
 </template>
 
 <script>
@@ -13,7 +13,6 @@ import { ref, watch, computed } from 'vue';
 
 import waitroom from './waitroom.vue';
 import gameroom from './gameroom.vue';
-import userApi from '../../../js/api/user.js';
 import gameApi from '../../../js/api/game.js';
 import rntxt from '../../components/rntxt.vue';
 import wsHandler from '../../../js/websocket/handler.js';

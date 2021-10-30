@@ -16,6 +16,57 @@ const scoreList = [
     {key: 15, label1: 'game.yahtzee.chance', label2: 'game.yahtzee.schance'},
 ]
 
+function calcScore(dice, key) {
+    if (dice.length < 1) return -1;
+    let table = {}, vlist = [], sm = 0, sc1 = 1, sc2 = 1, sc3 = 1;
+    for (let i = dice.length; i--; ) {
+        if (table[dice[i]]) ++table[dice[i]];
+        else table[dice[i]] = 1;
+        sm += dice[i];
+    }
+    for (let i of Object.keys(table)) {
+        vlist.push(table[i]);
+    }
+    vlist.sort((i, j) => i - j);
+
+    if (key >= 1 && key <= 6) {
+        return dice.filter(d => d == key).length * key
+    } else {
+        switch (key) {
+        case 9:
+            if (vlist[vlist.length - 1] >= 3) return sm;
+            return 0;
+        case 10:
+            if (vlist[vlist.length - 1] >= 4) return sm;
+            return 0;
+        case 11:
+            if (vlist.length == 2 && vlist[0] == 2 && vlist[1] == 3) return 25;
+            return 0;
+        case 12:
+            for (let i = 4; i--; ) {
+                sc1 *= table[i] ? table[i] : 0;
+                sc2 *= table[i + 1] ? table[i + 1] : 0;
+                sc3 *= table[i + 2] ? table[i + 2] : 0;
+            }
+            if (sc1 > 0 || sc2 > 0 || sc3 > 0) return 30;
+            return 0;
+        case 13:
+            for (let i = 5; i--; ) {
+                sc1 *= table[i] ? table[i] : 0;
+                sc2 *= table[i + 1] ? table[i + 1] : 0;
+            }
+            if (sc1 > 0 || sc2 > 0) return 40;
+            return 0;
+        case 14:
+            if (vlist.length == 1 && vlist[0] == 5) return 50;
+            return 0;
+        case 15:
+            return sm;
+        }
+    }
+}
+
 export default {
     scoreList,
+    calcScore,
 }

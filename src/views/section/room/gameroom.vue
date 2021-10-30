@@ -4,14 +4,13 @@ div.game-content
         rntxt(:init_message="room.name" :init_fontSize="30")
     div.room-nav
         |navigation bar
-    yahtzee(v-if="room.gameId == 0" :room="room")
-    lucky-number(v-else-if="room.gameId == 1" :room="room")
+    yahtzee(v-if="room.gameId == 0" v-model:room="room")
+    lucky-number(v-else-if="room.gameId == 1" v-model:room="room")
     div(v-else) 404
 </template>
 
 <script>
-import { toRefs } from 'vue';
-
+import Util from '../../components/js/util.js';
 import rntxt from '../../components/rntxt.vue';
 import yahtzee from './games/yahtzee/content.vue';
 import luckyNumber from './games/luckyNumber/content.vue';
@@ -29,8 +28,8 @@ export default {
             default: {loading: true},
         },
     },
-    setup: function(props) {
-        const { room } = toRefs(props);
+    setup: function(props, {emit}) {
+        const room = Util.modelIO(props, emit, 'room');
 
         return {
             room,

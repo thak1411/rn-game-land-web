@@ -16,6 +16,7 @@ export default createStore({
         chatList: [],
         joinAlert: [],
         leaveAlert: [],
+        gameMessage: [],
         inviteAlert: [],
         inviteToast: [],
         rejectSelfAlert: [],
@@ -27,6 +28,7 @@ export default createStore({
         inviteAlertFirst: (state) => state.inviteAlert.length > 0 ? state.inviteAlert[0] : null,
         rejectSelfAlertFirst: (state) => state.rejectSelfAlert.length > 0 ? state.rejectSelfAlert[0] : null,
         rejectInviteAlertFirst: (state) => state.rejectInviteAlert.length > 0 ? state.rejectInviteAlert[0] : null,
+        gameMessageFirst: (state) => state.gameMessage.length > 0 ? state.gameMessage[0] : null,
         inviteToast: (state) => state.inviteToast,
         userName: (state) => state.user.name,
         chatList: (state) => state.chatList,
@@ -74,6 +76,12 @@ export default createStore({
         },
         popRejectSelfAlert: function(state) {
             state.rejectSelfAlert.shift();
+        },
+        appendGameMessage: function(state, payload) {
+            state.gameMessage.push(payload);
+        },
+        popGameMessage: function(state) {
+            state.gameMessage.shift();
         },
         appendChatMessage: function(state, payload) {
             if (state.chatList.length >= 100) state.chatList.shift();

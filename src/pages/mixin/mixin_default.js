@@ -34,6 +34,9 @@ function eventHandler(data) {
     case 250: // start game //
         store.commit('setNewRoom', data);
         break;
+    case 1000: // game message //
+        store.commit('appendGameMessage', data);
+        break;
     default:
     }
 }
