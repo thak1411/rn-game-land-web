@@ -44,16 +44,16 @@ function calcScore(dice, key) {
             return 0;
         case 12:
             for (let i = 4; i--; ) {
-                sc1 *= table[i] ? table[i] : 0;
-                sc2 *= table[i + 1] ? table[i + 1] : 0;
-                sc3 *= table[i + 2] ? table[i + 2] : 0;
+                sc1 *= table[i + 1] ? table[i + 1] : 0;
+                sc2 *= table[i + 2] ? table[i + 2] : 0;
+                sc3 *= table[i + 3] ? table[i + 3] : 0;
             }
             if (sc1 > 0 || sc2 > 0 || sc3 > 0) return 30;
             return 0;
         case 13:
             for (let i = 5; i--; ) {
-                sc1 *= table[i] ? table[i] : 0;
-                sc2 *= table[i + 1] ? table[i + 1] : 0;
+                sc1 *= table[i + 1] ? table[i + 1] : 0;
+                sc2 *= table[i + 2] ? table[i + 2] : 0;
             }
             if (sc1 > 0 || sc2 > 0) return 40;
             return 0;

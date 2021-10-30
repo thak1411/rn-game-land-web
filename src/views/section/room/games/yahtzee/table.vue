@@ -5,7 +5,7 @@ table.yahtzee-table
             th
                 rntxt(:init_message="t('game.yahtzee.score')" :init_fontSize="14" :init_fontWeight="900")
             th(v-for="(item, key) in player" :key="key")
-                rntxt(:init_message="item.name" :init_fontSize="14" :init_fontWeight="900")
+                rntxt(:init_message="item.name + ' ' + getScore(0, key)" :init_fontSize="14" :init_fontWeight="900")
     tbody
         tr(v-for="(item, key) in scoreList" :key="key")
             td
@@ -65,12 +65,14 @@ export default {
         }
 
         const calcScore = (key, pkey) => {
-            if (key == 7 || key == 8 || pkey != turn.value) return '';
+            if (pkey != turn.value) return '';
             return handler.calcScore(dice.value, key);
         }
 
         const getScore = computed(() => {
             return (key, pkey) => {
+                if (key == 8) return '';
+                if (key == 7) return score.value[pkey] ? (score.value[pkey].value[key] >= 0 ? '35' : '(' + score.value[pkey].value[key] + ')') : '(-63)';
                 return score.value[pkey] ? score.value[pkey].value[key] != undefined ? score.value[pkey].value[key] : calcScore(key, pkey) : -1;
             };
         })
