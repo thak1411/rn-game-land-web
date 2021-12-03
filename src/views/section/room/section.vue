@@ -2,6 +2,7 @@
 div.room-section
     div(v-if="room.loading")
         rntxt(:init_message="t('room.loading')")
+    endroom(v-else-if="!room.start && isStarted" v-model:room="room" v-model:isStarted="isStarted")
     waitroom(v-else-if="!room.start" v-model:room="room" :inRoomUser="inRoomUser" :isFriend="isFriend")
     gameroom(v-else v-model:room="room")
 </template>
@@ -11,6 +12,7 @@ import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import { ref, watch, computed } from 'vue';
 
+import endroom from './endroom.vue';
 import waitroom from './waitroom.vue';
 import gameroom from './gameroom.vue';
 import gameApi from '../../../js/api/game.js';
@@ -21,6 +23,7 @@ export default {
     name: 'room-section',
     components: {
         rntxt,
+        endroom,
         waitroom,
         gameroom,
     },
@@ -32,6 +35,7 @@ export default {
         const roomId = ref(params.get('roomId'));
         const inRoomUser = ref({});
         const isFriend = ref({});
+        const isStarted = ref(false);
         
         if (roomId.value == null) {
             window.location.href = '/';
@@ -48,6 +52,7 @@ export default {
                     const value = res.data.player[i];
                     inRoomUser.value[value.id] = true;
                 }
+                isStarted.value |= room.value.start;
             })
             .catch(err => {
                 if (err.response.status == 401) {
@@ -116,12 +121,20 @@ export default {
             const msg = v.message;
             room.value = msg.room;
             store.commit('setNewRoom', null);
+            isStarted.value |= room.value.start;
+        })
+
+        const roomStart = computed(() => room.value.start);
+        watch(roomStart, (v) => {
+            if (v == null) return;
+            isStarted.value |= v;
         })
 
         return {
             t,
             room,
             isFriend,
+            isStarted,
             inRoomUser,
         };
     },

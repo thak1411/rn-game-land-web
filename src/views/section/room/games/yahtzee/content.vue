@@ -53,6 +53,10 @@ export default {
             case 7: // new timer //
                 room.value.data.timer = msg.data;
                 break;
+            case 8: // game end //
+                room.value.start = false;
+                room.value.data.resultTable = msg.data.resultTable;
+                break;
             }
 
             store.commit('popGameMessage');
