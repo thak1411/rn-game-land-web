@@ -35,7 +35,7 @@ export default {
         const selected = ref([false, false, false, false, false]);
 
         const imageLoader = (diceNum) => {
-            return require(`../../../../../assets/dice${diceNum}.png`);
+            return require(`./resource/dice${diceNum}.png`);
         }
 
         const dice = computed(() => {

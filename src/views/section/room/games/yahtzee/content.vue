@@ -27,6 +27,8 @@ export default {
         const store = useStore();
         const room = Util.modelIO(props, emit, 'room');
 
+        const rollSound = new Audio(require('./resource/rollDice.mp3'));
+
         const gameMessage = computed(() => store.getters['gameMessageFirst']);
         watch(gameMessage, (v) => {
             if (v == null) return;
@@ -37,6 +39,7 @@ export default {
                 break;
             case 2: // new field dice //
                 room.value.data.fieldDice = msg.data;
+                rollSound.play();
                 break;
             case 3: // new score //
                 room.value.data.playerScore[msg.data.turn].value[msg.data.scoreKey] = msg.data.score;
