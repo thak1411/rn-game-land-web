@@ -10,8 +10,7 @@ table.yahtzee-table
         tr(v-for="(item, key) in scoreList" :key="key")
             td
                 rntxt(:init_message="t(item.label1)" :init_fontSize="16" :init_fontWeight="900")
-                br
-                rntxt(:init_message="t(item.label2)")
+                rntxt.ml15(:init_message="t(item.label2)")
             td(v-for="(pitem, pkey) in player" :key="pkey"
                 @click="onClickScore(item.key, pitem.id)"
                 :class="(scored(item.key, pkey) ? 'scored' : 'not-scored') + ' ' + (turn == pkey ? 'turn' : 'wait')"
@@ -120,5 +119,8 @@ export default {
 .turn:not(.scored) {
     cursor: pointer;
     background-color: #44ee44;
+}
+.ml15 {
+    margin-left: 15px;
 }
 </style>
