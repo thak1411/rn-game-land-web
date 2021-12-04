@@ -39,6 +39,7 @@ export default {
                 break;
             case 2: // new field dice //
                 room.value.data.fieldDice = msg.data;
+                rollSound.load();
                 rollSound.play();
                 break;
             case 3: // new score //
