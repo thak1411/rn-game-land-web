@@ -11,7 +11,9 @@ div.gamelist-section
                     th
                         rntxt(:init_message="t('gamelist.name')" :init_fontSize="16")
                     th
-                        rntxt(:init_message="t('gamelist.min-player')" :init_fontSize="16")
+                        rntxt(:init_message="t('gamelist.min_player')" :init_fontSize="16")
+                    th
+                        rntxt(:init_message="t('gamelist.max_player')" :init_fontSize="16")
             tbody
                 tr(v-for="(game, key) in gamelist" :key="key")
                     td
@@ -20,6 +22,8 @@ div.gamelist-section
                         rntxt(:init_message="game.name" :init_fontSize="14" @click="onClick(game.id, game.name)")
                     td
                         rntxt(:init_message="game.minPlayer" :init_fontSize="14")
+                    td
+                        rntxt(:init_message="game.maxPlayer" :init_fontSize="14")
 </template>
 
 <script>
