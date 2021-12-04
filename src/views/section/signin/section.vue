@@ -38,11 +38,12 @@ export default {
             setTimeout(() => {
                 userApi.signin(username.value, password.value)
                 .then(res => {
-                    if (window.history.state.position > 1) {
-                        window.history.back()
-                    } else {
-                        window.location.href = '/';
-                    }
+                    window.location = document.referrer
+                    // if (window.history.state.position > 1) {
+                    //     window.history.back()
+                    // } else {
+                    //     window.location.href = '/';
+                    // }
                 })
                 .catch(err => {
                     if (err.request.status == 401) {
