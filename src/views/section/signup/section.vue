@@ -62,9 +62,12 @@ export default {
                     if (res.data.status == 910) {
                         alert(t('sign.signup_success'));
                         window.location.href = '/';
+                    } else if (res.data.status == 909) {
+                        signFail.value = true;
+                        failMessage.value = t('sign.duplicated_username');
                     } else {
                         signFail.value = true;
-                        failMessage.value = t('sign.signup_error');
+                        failMessage.value = t('sign.duplicated_name');
                     }
                 })
                 .catch(err => {
