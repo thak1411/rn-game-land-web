@@ -9,7 +9,7 @@ block content
     rninput.mt15(v-model="username" :init_placeHolder="t('sign.username')" :init_width="'100%'" :init_height="30" :init_fontSize="16" :init_maxLength="16" @keypress.enter="onSubmit")
     rninput.mt15(v-model="password" :init_placeHolder="t('sign.password')" :init_width="'100%'" :init_height="30" :init_fontSize="16" :init_maxLength="16" init_type="password" @keypress.enter="onSubmit")
     rninput.mt15(v-model="confirmPassword" :init_placeHolder="t('sign.confirm_password')" :init_width="'100%'" :init_height="30" :init_fontSize="16" :init_maxLength="16" init_type="password" @keypress.enter="onSubmit")
-    rntxt(v-if="signFail" :init_message="t('sign.signup_error')" init_color="#ED2939")
+    rntxt(v-if="signFail" :init_message="failMessage" init_color="#ED2939")
     button.signup-btn.mt15(@click="onSubmit")
         rntxt(:init_message="t('submit')" :init_color="'#ffffff'")
 </template>
@@ -34,9 +34,28 @@ export default {
         const username = ref('');
         const password = ref('');
         const signFail = ref(false);
+        const failMessage = ref('');
         const confirmPassword = ref('');
 
         const onSubmit = () => {
+            const reg = [/^[ㄱ-ㅎ|가-힣|ㅏ-ㅣ|a-z|A-Z|0-9|]{2,6}$/, /^[a-z|A-Z|0-9|]{6,12}$/, /^[a-z|A-Z|0-9|]{6,12}$/];
+            const msg = [t('sign.name_fail'), t('sign.username_fail'), t('sign.password_fail')];
+            const tar = [name.value, username.value, password.value];
+            for (let i = 0; i < reg.length; ++i) {
+                const r = reg[i];
+                const m = msg[i];
+                const g = tar[i];
+                if (!r.test(g)) {
+                    signFail.value = true;
+                    failMessage.value = m;
+                    return;
+                }
+            }
+            if (password.value !== confirmPassword.value) {
+                signFail.value = true;
+                failMessage.value = t('sign.confirm_password_fail');
+                return;
+            }
             setTimeout(() => {
                 userApi.signup(name.value, username.value, password.value)
                 .then(res => {
@@ -45,6 +64,7 @@ export default {
                         window.location.href = '/';
                     } else {
                         signFail.value = true;
+                        failMessage.value = t('sign.signup_error');
                     }
                 })
                 .catch(err => {
@@ -60,6 +80,7 @@ export default {
             password,
             signFail,
             onSubmit,
+            failMessage,
             confirmPassword,
         };
     },
