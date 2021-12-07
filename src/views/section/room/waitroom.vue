@@ -1,16 +1,15 @@
 <template lang="pug">
 div.room-content
     div.room-title
-        rntxt(:init_message="room.name" :init_fontSize="30")
+        rntxt(:init_message="`[${room.gameName}] ${room.name}`" :init_fontSize="30")
     div.room-nav
-        |navigation bar
-        button(@click="onClickStart")
+        button(@click="onClickStart" :disabled="!isOwner || !checkPlayerCount")
             rntxt(:init_message="t('room.start')" :init_fontSize="16" :init_fontWeight="900")
     table.room-player
         thead
             tr
                 th
-                    rntxt(:init_message="t('room.player') + `(${playerOnline}/${playerLength})`" :init_fontSize="16")
+                    rntxt(:init_message="t('room.player') + ` (${playerOnline}/${playerLength}) [${room.minPlayer}~${room.maxPlayer}]`" :init_fontSize="16")
         tbody
             tr(v-for="(player, key) in room.player" :key="key")
                 td.player-name
@@ -98,6 +97,17 @@ export default {
             }, 0);
         })
 
+        const isOwner = computed(() => {
+            return store.state.user.id == room.value.owner;
+        });
+        const checkPlayerCount = computed(() => {
+            if (!room.value.player) return false;
+            let cnt = 0;
+            for (let i = room.value.player.length; i--; ) {
+                if (room.value.player[i].isOnline) ++cnt;
+            }
+            return cnt >= room.value.minPlayer && cnt <= room.value.maxPlayer;
+        });
 
         const playerColor = computed(() => {
             return (isOnline) => {
@@ -159,6 +169,7 @@ export default {
         return {
             t,
             room,
+            isOwner,
             onClick,
             userList,
             isFriend,
@@ -168,6 +179,7 @@ export default {
             playerLength,
             playerOnline,
             onClickInvite,
+            checkPlayerCount,
             filteredUserList,
         };
     },
@@ -214,6 +226,7 @@ export default {
     }
 }
 .room-nav {
+    margin-top: 15px;
     margin-bottom: 40px;
 }
 .invite-player {
